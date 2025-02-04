@@ -1,0 +1,80 @@
+[
+    {
+      "id": 1,
+      "title": "Camiseta Titular Club Atlético Becker",
+      "description": "Camiseta oficial titular del Club Atlético Becker, confeccionada en algodón premium.",
+      "code": "CAM-TIT-001",
+      "price": 4500,
+      "status": true,
+      "stock": 50,
+      "category": "Camisetas",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Camiseta+Titular"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Camiseta Suplente Club Atlético Becker",
+      "description": "Camiseta oficial suplente del Club Atlético Becker, ideal para partidos fuera de casa.",
+      "code": "CAM-SUP-002",
+      "price": 4500,
+      "status": true,
+      "stock": 30,
+      "category": "Camisetas",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Camiseta+Suplente"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Short Oficial Club Atlético Becker",
+      "description": "Short oficial del Club Atlético Becker, fabricado con material transpirable.",
+      "code": "SHORT-003",
+      "price": 2500,
+      "status": true,
+      "stock": 40,
+      "category": "Pantalones",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Short+Oficial"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Medias Oficiales Club Atlético Becker",
+      "description": "Medias oficiales del Club Atlético Becker, diseñadas para máximo confort.",
+      "code": "MED-004",
+      "price": 800,
+      "status": true,
+      "stock": 100,
+      "category": "Accesorios",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Medias+Oficiales"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Buzo Entrenamiento Club Atlético Becker",
+      "description": "Buzo oficial de entrenamiento del Club Atlético Becker, ideal para días fríos.",
+      "code": "BUZO-005",
+      "price": 6000,
+      "status": true,
+      "stock": 20,
+      "category": "Ropa Deportiva",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Buzo+Entrenamiento"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Gorra Oficial Club Atlético Becker",
+      "description": "Gorra oficial del Club Atlético Becker, perfecta para protegerse del sol.",
+      "code": "GORRA-006",
+      "price": 1200,
+      "status": true,
+      "stock": 60,
+      "category": "Accesorios",
+      "thumbnails": [
+        "https://via.placeholder.com/150?text=Gorra+Oficial"
+      ]
+    }
+  ]
