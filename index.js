@@ -1,6 +1,6 @@
 const express = require('express');
-const ProductManager = require('./src/managers/productManager');
-const CartManager = require('./src/managers/cartManager');
+const ProductManager = require('./src/managers/ProductManager');
+const CartManager = require('./src/managers/CartManager');
 const path = require('path');
 
 const app = express();
@@ -10,8 +10,8 @@ const PORT = 8080;
 app.use(express.json());
 
 // Rutas de archivos JSON
-const productsFilePath = path.join(__dirname, 'data', 'products.json');
-const cartsFilePath = path.join(__dirname, 'data', 'carts.json');
+const productsFilePath = path.join(__dirname, 'src/data/products.json');
+const cartsFilePath = path.join(__dirname, 'src/data/carts.json');
 
 // Instancias de los managers
 const productManager = new ProductManager(productsFilePath);

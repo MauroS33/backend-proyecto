@@ -46,4 +46,4 @@ class CartManager {
   }
 }
 
-module.exports = cartManager;
+module.exports = CartManager;
