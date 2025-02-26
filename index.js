@@ -1,5 +1,5 @@
 const express = require('express');
-const { createServer } = require('http')
+const { createServer } = require('http');
 const { Server } = require('socket.io');
 const handlebars = require('express-handlebars');
 const ProductManager = require('./src/managers/ProductManager');
@@ -9,28 +9,30 @@ const path = require('path');
 const app = express();
 const PORT = 8080;
 
-// Middleware para parsear JSON
+// Middleware JSON
 app.use(express.json());
 
+// Config de Handlebars
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.static(path.join(__dirname, 'public')));//mdlw archivos estaticos
+// Middleware archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Rutas de archivos JSON
+// Rutas JSON
 const productsFilePath = path.join(__dirname, 'src/data/products.json');
 const cartsFilePath = path.join(__dirname, 'src/data/carts.json');
 
-// Instancias de los managers
+// Instancias managers
 const productManager = new ProductManager(productsFilePath);
 const cartManager = new CartManager(cartsFilePath);
 
-//crear server http y la vinculacion de socket
+// Crear el servidor y vincular Socket
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-// Rutas para productos
+// Rutas productos
 app.get('/api/products', async (req, res) => {
   const products = await productManager.getProducts();
   res.json(products);
@@ -69,7 +71,7 @@ app.delete('/api/products/:pid', async (req, res) => {
   res.json({ message: 'Producto eliminado correctamente' });
 });
 
-// Rutas para carritos
+// Rutas carritos
 app.post('/api/carts', async (req, res) => {
   const newCart = await CartManager.createCart();
   res.status(201).json(newCart);
@@ -96,26 +98,26 @@ app.post('/api/carts/:cid/product/:pid', async (req, res) => {
   }
 });
 
-// Ruta home.hndlbrs
+// Ruta home.hndbr
 app.get('/', async (req, res) => {
   const products = await productManager.getProducts();
   res.render('home', { title: 'Home', products });
 });
 
-// Ruta realTimeProducts.hndlbrs
+// Ruta realTimeProducts.hndbr
 app.get('/realtimeproducts', async (req, res) => {
   const products = await productManager.getProducts();
   res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
 });
 
-// Configurar Socket.IO
+// Configurar Socket
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
   // Lista inicial de productos
   socket.emit('updateProducts', productManager.getProducts());
 
-  // Escuchar eventos client
+  // Escuchar eventos cliente
   socket.on('addProduct', async (productData) => {
     await productManager.addProduct(productData);
     const updatedProducts = await productManager.getProducts();
@@ -130,6 +132,6 @@ io.on('connection', (socket) => {
 });
 
 // Iniciar el servidor
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
