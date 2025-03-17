@@ -1,30 +1,132 @@
+const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const app = require('./src/app'); // Importa la configuración desde app.js
-const PORT = 8080;
-const productManager = app.locals.productManager;
+const handlebars = require('express-handlebars');
+const ProductManager = require('./src/managers/ProductManager');
+const CartManager = require('./src/managers/CartManager');
+const path = require('path');
 
-// Crear el servidor HTTP y vincularlo con Socket.IO
+const app = express();
+const PORT = 8080;
+
+// Middleware JSON
+app.use(express.json());
+
+// Config de Handlebars
+app.engine('handlebars', handlebars.engine());
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Rutas JSON
+const productsFilePath = path.join(__dirname, 'src/data/products.json');
+const cartsFilePath = path.join(__dirname, 'src/data/carts.json');
+
+// Instancias managers
+const productManager = new ProductManager(productsFilePath);
+const cartManager = new CartManager(cartsFilePath);
+
+// Crear el servidor y vincular Socket
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-// Configurar Socket.IO
+// Rutas productos
+app.get('/api/products', async (req, res) => {
+  const products = await productManager.getProducts();
+  res.json(products);
+});
+
+app.get('/api/products/:pid', async (req, res) => {
+  const productId = parseInt(req.params.pid);
+  const product = await productManager.getProductById(productId);
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404).json({ error: 'Producto no encontrado' });
+  }
+});
+
+app.post('/api/products', async (req, res) => {
+  const productData = req.body;
+  const newProduct = await productManager.addProduct(productData);
+  res.status(201).json(newProduct);
+});
+
+app.put('/api/products/:pid', async (req, res) => {
+  const productId = parseInt(req.params.pid);
+  const updatedFields = req.body;
+  const updatedProduct = await productManager.updateProduct(productId, updatedFields);
+  if (updatedProduct) {
+    res.json(updatedProduct);
+  } else {
+    res.status(404).json({ error: 'Producto no encontrado' });
+  }
+});
+
+app.delete('/api/products/:pid', async (req, res) => {
+  const productId = parseInt(req.params.pid);
+  await productManager.deleteProduct(productId);
+  res.json({ message: 'Producto eliminado correctamente' });
+});
+
+// Rutas carritos
+app.post('/api/carts', async (req, res) => {
+  const newCart = await CartManager.createCart();
+  res.status(201).json(newCart);
+});
+
+app.get('/api/carts/:cid', async (req, res) => {
+  const cartId = parseInt(req.params.cid);
+  const cart = await CartManager.getCartById(cartId);
+  if (cart) {
+    res.json(cart);
+  } else {
+    res.status(404).json({ error: 'Carrito no encontrado' });
+  }
+});
+
+app.post('/api/carts/:cid/product/:pid', async (req, res) => {
+  const cartId = parseInt(req.params.cid);
+  const productId = parseInt(req.params.pid);
+  const updatedCart = await CartManager.addProductToCart(cartId, productId);
+  if (updatedCart) {
+    res.json(updatedCart);
+  } else {
+    res.status(404).json({ error: 'Carrito no encontrado' });
+  }
+});
+
+// Ruta home.hndbr
+app.get('/', async (req, res) => {
+  const products = await productManager.getProducts();
+  res.render('home', { title: 'Home', products });
+});
+
+// Ruta realTimeProducts.hndbr
+app.get('/realtimeproducts', async (req, res) => {
+  const products = await productManager.getProducts();
+  res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
+});
+
+// Configurar Socket
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
   // Lista inicial de productos
-  socket.emit('updateProducts', app.locals.productManager.getProducts());
+  socket.emit('updateProducts', productManager.getProducts());
 
-  // Escuchar eventos del cliente
+  // Escuchar eventos cliente
   socket.on('addProduct', async (productData) => {
-    await app.locals.productManager.addProduct(productData);
-    const updatedProducts = await app.locals.productManager.getProducts();
+    await productManager.addProduct(productData);
+    const updatedProducts = await productManager.getProducts();
     io.emit('updateProducts', updatedProducts); // Notificar a todos los clientes
   });
 
   socket.on('deleteProduct', async (productId) => {
-    await app.locals.productManager.deleteProduct(productId);
-    const updatedProducts = await app.locals.productManager.getProducts();
+    await productManager.deleteProduct(productId);
+    const updatedProducts = await productManager.getProducts();
     io.emit('updateProducts', updatedProducts); // Notificar a todos los clientes
   });
 });
