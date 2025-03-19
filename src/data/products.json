@@ -1,80 +1,80 @@
 [
-    {
-      "id": 1,
-      "title": "Camiseta Titular Club Atlético Becker",
-      "description": "Camiseta oficial titular del Club Atlético Becker, marca Adidas con la tela ClimaCool de la marca, en verde con detalles en rojo y amarillo.",
-      "code": "CAM-TIT-001",
-      "price": 2500,
-      "status": true,
-      "stock": 50,
-      "category": "Camisetas",
-      "thumbnails": [
-        "/images/titular.png"
-      ]
-    },
-    {
-      "id": 2,
-      "title": "Camiseta Alternativa Club Atlético Becker",
-      "description": "Camiseta oficial alternativa del Club Atlético Becker, ideal para partidos fuera de casa.",
-      "code": "CAM-SUP-002",
-      "price": 2500,
-      "status": true,
-      "stock": 30,
-      "category": "Camisetas",
-      "thumbnails": [
-        "/images/alternativa.png"
-      ]
-    },
-    {
-      "id": 3,
-      "title": "Short Oficial Club Atlético Becker",
-      "description": "Short oficial del Club Atlético Becker, fabricado con material transpirable de la marca Adidas, en color negro con los detalles en verde, amarillo y rojo.",
-      "code": "SHORT-003",
-      "price": 1000,
-      "status": true,
-      "stock": 40,
-      "category": "Pantalones",
-      "thumbnails": [
-        "/images/short.png"
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Medias Oficiales Club Atlético Becker",
-      "description": "Medias oficiales del Club Atlético Becker, elaboradas con 100% algodon, en color negro.",
-      "code": "MED-004",
-      "price": 500,
-      "status": true,
-      "stock": 100,
-      "category": "Accesorios",
-      "thumbnails": [
-        "/images/medias.png"
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Buzo Entrenamiento Club Atlético Becker",
-      "description": "Buzo oficial de entrenamiento del Club Atlético Becker, color rojo con escudo boradado.",
-      "code": "BUZO-005",
-      "price": 2000,
-      "status": true,
-      "stock": 20,
-      "category": "Ropa Deportiva",
-      "thumbnails": [
-        "/images/buzo.png"
-      ]
-    },
-    {
-      "id": 6,
-      "title": "Gorra Oficial Club Atlético Becker",
-      "description": "Gorra oficial del Club Atlético Becker, negra con el escudo bordado.",
-      "code": "GORRA-006",
-      "price": 600,
-      "status": true,
-      "stock": 60,
-      "category": "Accesorios",
-      "thumbnails": [
-        "/images/gorra.png"
-      ]
-    }
-  ]
+  {
+    "id": 1,
+    "title": "Camiseta Titular Club Atlético Becker",
+    "description": "Camiseta oficial titular del Club Atlético Becker, marca Adidas con la tela ClimaCool de la marca, en verde con detalles en rojo y amarillo.",
+    "code": "CAM-TIT-001",
+    "price": 2500,
+    "status": true,
+    "stock": 50,
+    "category": "Camisetas",
+    "thumbnails": [
+      "/images/titular.png"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Camiseta Alternativa Club Atlético Becker",
+    "description": "Camiseta oficial alternativa del Club Atlético Becker, ideal para partidos fuera de casa.",
+    "code": "CAM-SUP-002",
+    "price": 2500,
+    "status": true,
+    "stock": 30,
+    "category": "Camisetas",
+    "thumbnails": [
+      "/images/alternativa.png"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Short Oficial Club Atlético Becker",
+    "description": "Short oficial del Club Atlético Becker, fabricado con material transpirable de la marca Adidas, en color negro con los detalles en verde, amarillo y rojo.",
+    "code": "SHORT-003",
+    "price": 1000,
+    "status": true,
+    "stock": 40,
+    "category": "Pantalones",
+    "thumbnails": [
+      "/images/short.png"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Medias Oficiales Club Atlético Becker",
+    "description": "Medias oficiales del Club Atlético Becker, elaboradas con 100% algodon, en color negro.",
+    "code": "MED-004",
+    "price": 500,
+    "status": true,
+    "stock": 100,
+    "category": "Accesorios",
+    "thumbnails": [
+      "/images/medias.png"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Buzo Entrenamiento Club Atlético Becker",
+    "description": "Buzo oficial de entrenamiento del Club Atlético Becker, color rojo con escudo boradado.",
+    "code": "BUZO-005",
+    "price": 2000,
+    "status": true,
+    "stock": 20,
+    "category": "Ropa Deportiva",
+    "thumbnails": [
+      "/images/buzo.png"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Gorra Oficial Club Atlético Becker",
+    "description": "Gorra oficial del Club Atlético Becker, negra con el escudo bordado.",
+    "code": "GORRA-006",
+    "price": 600,
+    "status": true,
+    "stock": 60,
+    "category": "Accesorios",
+    "thumbnails": [
+      "/images/gorra.png"
+    ]
+  }
+]

@@ -26,13 +26,13 @@ app.use('/api/carts', cartsRouter);
 
 // Ruta home.handlebars
 app.get('/', async (req, res) => {
-  const products = await require('../controllers/product.controller').getAllProducts();
+  const products = await require('./controllers/product.controller').getAllProducts();
   res.render('home', { title: 'Home', products });
 });
 
 // Ruta realTimeProducts.handlebars
 app.get('/realtimeproducts', async (req, res) => {
-  const products = await require('../controllers/product.controller').getAllProducts();
+  const products = await require('./controllers/product.controller').getAllProducts();
   res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
 });
 
