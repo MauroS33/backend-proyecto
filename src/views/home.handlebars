@@ -1,6 +1,12 @@
-<h1>Lista de Productos</h1>
-<ul>
-  {{#each products}}
-    <li>{{this.title}} - ${{this.price}}</li>
-  {{/each}}
-</ul>
+{{#extend "main"}}
+  {{#content "body"}}
+  <div class="container"></div>
+    <h1>Bienvenido a Ecommerce Becker</h1>
+    <ul class="product-list" role="list">
+      {{#each products}}
+        <li class="product-item">{{this.title}} - ${{this.price}}</li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/content}}
+{{/extend}}

@@ -1,0 +1,154 @@
+/* Reset básico para eliminar márgenes predeterminados */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos generales para el cuerpo de la página */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000; /* Fondo negro */
+  color: #fff; /* Texto blanco */
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Centrar el contenedor */
+  padding: 20px; /* Espaciado interno */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrar horizontalmente */
+}
+
+/* Encabezado */
+h1 {
+  text-align: center;
+  color: #ffcc00; /* Amarillo rasta */
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Lista de productos */
+.product-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Elementos de la lista */
+.product-item {
+  background: #fff; /* Fondo blanco */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.product-item h2 {
+  color: #007BFF; /* Azul para los títulos */
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.product-item p {
+  color: #333; /* Precio en gris oscuro */
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Botones */
+button {
+  background-color: #ff6600; /* Naranja vibrante */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #e65c00; /* Naranja más oscuro al pasar el mouse */
+}
+
+/* Formulario para agregar un producto */
+#add-product-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #1a1a1a; /* Fondo oscuro para el formulario */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#add-product-form input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+}
+
+#add-product-form button {
+  width: 100%;
+  background-color: #00ff00; /* Verde rasta para el botón de envío */
+}
+
+#add-product-form button:hover {
+  background-color: #00cc00; /* Verde más oscuro al pasar el mouse */
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Colores rasta para encabezados secundarios */
+.title {
+  color: #ff0000; /* Rojo rasta */
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Mensajes de error o éxito */
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}

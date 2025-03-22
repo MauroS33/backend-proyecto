@@ -1,16 +1,21 @@
-<h1>Productos en Tiempo Real</h1>
-<ul id="product-list">
-  {{#each products}}
-    <li>{{this.title}} - ${{this.price}}</li>
-  {{/each}}
-</ul>
+<div class="container">
+  <h1 class="title">{{title}}</h1>
+  <ul class="product-list">
+    {{#each products}}
+      <li class="product-item">
+        <h2>{{this.title}}</h2>
+        <p>Precio: ${{this.price}}</p>
+      </li>
+    {{/each}}
+  </ul>
 
 <!-- Formulario para agregar un producto -->
-<form id="add-product-form">
-  <input type="text" id="title" placeholder="Título" required />
-  <input type="number" id="price" placeholder="Precio" required />
-  <button type="submit">Agregar Producto</button>
-</form>
+  <form id="add-product-form">
+    <input type="text" id="title" placeholder="Título" required />
+    <input type="number" id="price" placeholder="Precio" required />
+    <button type="submit">Agregar Producto</button>
+  </form>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -18,7 +23,7 @@
 
   // Escuchar eventos del servidor
   socket.on('updateProducts', (products) => {
-    const productList = document.getElementById('product-list');
+    const productList = document.querySelector('.product-list');
     productList.innerHTML = ''; // Limpiar la lista
     products.forEach(product => {
       const li = document.createElement('li');
@@ -26,6 +31,18 @@
       productList.appendChild(li);
     });
   });
+
+
+  // Aviso de error
+  socket.on('error', (errorMessage) => {
+    Swal.fire({
+      title: 'Error',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+  });
+
 
   // Enviar datos del formulario al servidor
   document.getElementById('add-product-form').addEventListener('submit', (e) => {
