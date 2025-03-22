@@ -1,0 +1,7 @@
+.env
+node_modules/
+.log
+Thumbs.db
+package-lock.json
+yarn.lock
+config.local

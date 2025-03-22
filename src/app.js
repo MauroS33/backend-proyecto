@@ -1,6 +1,8 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const path = require('path');
+const mongoose = require('mongoose'); // Importar Mongoose
+require('dotenv').config(); // Cargar variables de entorno
 
 // Crear la aplicación Express
 const app = express();
@@ -35,5 +37,11 @@ app.get('/realtimeproducts', async (req, res) => {
   const products = await require('./controllers/product.controller').getAllProducts();
   res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
 });
+
+// Conexión a MongoDB Atlas
+const MONGO_URI = process.env.MONGO_URI; // Obtener la cadena de conexión desde .env
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Conexión exitosa a MongoDB Atlas"))
+  .catch(err => console.error("Error al conectar:", err));
 
 module.exports = app;
