@@ -15,9 +15,12 @@
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
     "mongoose": "^8.12.2",
-    "socket.io": "^4.8.1"
-  },
+    "socket.io": "^4.8.1",
+      },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  }
+  },
+  "engines": {
+  "node": "18.x"
+}
 }
