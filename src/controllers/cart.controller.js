@@ -44,3 +44,4 @@ exports.removeProductFromCart = async (cartId, productId) => {
   await cart.save(); // Guardar el carrito (el middleware recalculará el total)
   return cart;
 };
+

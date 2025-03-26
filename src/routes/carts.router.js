@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Cart = require('../models/cart.model'); // Importar el modelo Cart
 const { createCart, getCartById, addProductToCart, removeProductFromCart } = require('../controllers/cart.controller');
 
 // Crear un nuevo carrito
@@ -16,8 +17,11 @@ router.post('/', async (req, res) => {
 // Obtener un carrito por ID
 router.get('/:cid', async (req, res) => {
   const cartId = req.params.cid;
+
   try {
-    const cart = await getCartById(cartId);
+    const cart = await Cart.findById(cartId).populate('products.product'); // Cargar detalles de los productos
+    if (!cart) throw new Error("Carrito no encontrado");
+
     res.json(cart);
   } catch (error) {
     console.error("Error al obtener carrito:", error);

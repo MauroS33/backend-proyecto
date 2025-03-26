@@ -20,6 +20,9 @@
     {{/each}}
   </div>
 
+    <!-- Botón para ir al carrito -->
+    <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
+
   <!-- Paginación -->
   <div id="pagination">
     <button id="prev-page" {{#ifCond currentPage 1}}disabled{{/ifCond}}>Anterior</button>
@@ -74,6 +77,10 @@
 
         const cart = await response.json();
         const cartDiv = document.getElementById('cart');
+        if (!cartDiv) {
+      console.error("El elemento 'cart' no fue encontrado en el DOM.");
+      return;
+    }
         cartDiv.innerHTML = ''; // Limpiar el carrito
 
         if (cart.products.length === 0) {
@@ -93,6 +100,7 @@
       }
     }
 
+
     // Inicializar el carrito
     document.addEventListener('DOMContentLoaded', async () => {
       let cartId = localStorage.getItem('cartId');
@@ -105,6 +113,7 @@
 
       loadCart(cartId); // Cargar el carrito
     });
+    
   </script>
 </body>
 </html>

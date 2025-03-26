@@ -23,9 +23,11 @@ app.engine('handlebars', handlebars.engine({
   helpers: {
     ifCond: function (v1, v2, options) {
       return v1 === v2 ? options.fn(this) : options.inverse(this); // Helper personalizado para condiciones
-    }
+    },
+    multiply: (price, quantity) => price * quantity // Helper para multiplicar precio y cantidad
+      }
   }
-}));
+));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
 
@@ -94,6 +96,27 @@ app.get('/products', async (req, res) => {
     });
   } catch (error) {
     console.error("Error al obtener productos:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
+// Ruta para ver el carrito
+app.get('/cart', async (req, res) => {
+  const cartId = req.query.cartId; // Obtener el ID del carrito desde los parámetros de la URL
+
+  if (!cartId) {
+    return res.render('cart', { title: 'Mi Carrito', cart: null }); // Renderizar la vista sin carrito
+  }
+
+  try {
+    const cart = await Cart.findById(cartId).populate('products.product'); // Cargar detalles de los productos
+    if (!cart) {
+      return res.render('cart', { title: 'Mi Carrito', cart: null }); // Renderizar la vista sin carrito
+    }
+
+    res.render('cart', { title: 'Mi Carrito', cart });
+  } catch (error) {
+    console.error("Error al cargar el carrito:", error);
     res.status(500).send("Error interno del servidor");
   }
 });
