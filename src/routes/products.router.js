@@ -2,10 +2,29 @@ const express = require('express');
 const router = express.Router();
 const { getAllProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('../controllers/product.controller');
 
-// Obtener todos los productos
+// Obtener todos los productos con paginación usando mongoose-paginate-v2
 router.get('/', async (req, res) => {
-  const products = await getAllProducts();
-  res.json(products);
+  const page = parseInt(req.query.page) || 1; // Página actual (por defecto: 1)
+  const limit = parseInt(req.query.limit) || 5; // Límite de productos por página (por defecto: 10)
+
+  try {
+    const options = {
+      page,
+      limit,
+      customLabels: {
+        totalDocs: 'total',
+        docs: 'products',
+        totalPages: 'totalPages',
+        currentPage: 'page'
+      }
+    };
+
+    const result = await Product.paginate({}, options); // Paginar los productos
+    res.json(result);
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
 
 // Obtener un producto por ID

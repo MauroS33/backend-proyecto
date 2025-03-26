@@ -7,6 +7,7 @@ const path = require('path');
 
 // Importar funciones de controladores
 const { getAllProducts, addProduct, deleteProduct } = require('./src/controllers/product.controller');
+const Product = require('./src/models/product.model'); // Importar el modelo de productos
 
 // Crear la aplicación Express
 const app = express();
@@ -18,6 +19,11 @@ app.engine('handlebars', handlebars.engine({
   runtimeOptions: {
     allowProtoPropertiesByDefault: true, // Permite el acceso a propiedades del prototipo
     allowProtoMethodsByDefault: true    // Permite el acceso a métodos del prototipo
+  },
+  helpers: {
+    ifCond: function (v1, v2, options) {
+      return v1 === v2 ? options.fn(this) : options.inverse(this); // Helper personalizado para condiciones
+    }
   }
 }));
 app.set('view engine', 'handlebars');
@@ -37,7 +43,7 @@ const cartsRouter = require('./src/routes/carts.router');
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
-// Rutas para vistas
+// Ruta para la página de inicio
 app.get('/', async (req, res) => {
   try {
     const products = await getAllProducts();
@@ -48,12 +54,46 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Ruta para la página de productos en tiempo real
 app.get('/realtimeproducts', async (req, res) => {
   try {
     const products = await getAllProducts();
     res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
   } catch (error) {
     console.error("Error al cargar productos:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
+// Ruta para la página de productos paginados
+app.get('/products', async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual (por defecto: 1)
+  const limit = parseInt(req.query.limit) || 10; // Límite de productos por página (por defecto: 10)
+
+  try {
+    const options = {
+      page,
+      limit,
+      customLabels: {
+        totalDocs: 'total',
+        docs: 'products',
+        totalPages: 'totalPages',
+        currentPage: 'page'
+      }
+    };
+
+    const result = await Product.paginate({}, options); // Paginar los productos
+
+    // Renderiza la vista con los datos
+    res.render('products', {
+      title: 'Lista de Productos',
+      products: result.products,
+      total: result.total,
+      totalPages: result.totalPages,
+      currentPage: result.page
+    });
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
     res.status(500).send("Error interno del servidor");
   }
 });

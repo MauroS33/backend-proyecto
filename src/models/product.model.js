@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 // Definir el esquema del producto
 const productSchema = new mongoose.Schema({
@@ -9,6 +10,9 @@ const productSchema = new mongoose.Schema({
   category: { type: String, required: false },
   thumbnails: { type: [String], default: [] }
 });
+
+// Agregar el plugin de paginación
+productSchema.plugin(mongoosePaginate);
 
 // Middleware "pre" para actualizar la fecha de modificación
 productSchema.pre('findOneAndUpdate', function (next) {
