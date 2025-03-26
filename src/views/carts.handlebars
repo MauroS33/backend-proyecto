@@ -9,7 +9,9 @@
 <body>
   <h1>Mi Carrito</h1>
 
-  {{#if cart}}
+  {{#if errorMessage}}
+   <p>{{errorMessage}}</p>
+  {{else if cart}}
     <div id="cart">
       {{#each cart.products}}
         <div>

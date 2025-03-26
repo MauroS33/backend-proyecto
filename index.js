@@ -4,17 +4,18 @@ const express = require('express');
 const mongoose = require('mongoose'); // Importar Mongoose
 require('dotenv').config(); // Cargar variables de entorno
 const path = require('path');
+const session = require('express-session'); // Importar express-session
 
 // Importar funciones de controladores
 const { getAllProducts, addProduct, deleteProduct } = require('./src/controllers/product.controller');
 const Product = require('./src/models/product.model'); // Importar el modelo de productos
+const Cart = require('./src/models/cart.model'); // Importar el modelo de carritos
 
 // Crear la aplicación Express
 const app = express();
 
-const handlebars = require('express-handlebars');
-
 // Configuración de Handlebars como motor de plantillas
+const handlebars = require('express-handlebars');
 app.engine('handlebars', handlebars.engine({
   runtimeOptions: {
     allowProtoPropertiesByDefault: true, // Permite el acceso a propiedades del prototipo
@@ -25,9 +26,8 @@ app.engine('handlebars', handlebars.engine({
       return v1 === v2 ? options.fn(this) : options.inverse(this); // Helper personalizado para condiciones
     },
     multiply: (price, quantity) => price * quantity // Helper para multiplicar precio y cantidad
-      }
   }
-));
+}));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'src/views'));
 
@@ -37,11 +37,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Middleware para parsear JSON
 app.use(express.json());
 
+// Configurar sesiones
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'secreto', // Clave secreta para cifrar las sesiones
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Cambia a `true` si usas HTTPS
+}));
+
 // Importar rutas
+const usersRouter = require('./src/routes/users.router');
 const productsRouter = require('./src/routes/products.router');
 const cartsRouter = require('./src/routes/carts.router');
 
 // Montar las rutas
+app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
@@ -86,13 +96,22 @@ app.get('/products', async (req, res) => {
 
     const result = await Product.paginate({}, options); // Paginar los productos
 
+    // Obtener el ID del carrito del usuario
+    let cartId = req.session.cartId; // Obtener el carrito de la sesión
+    if (!cartId) {
+      const cart = await Cart.create({ products: [], total: 0 });
+      cartId = cart._id;
+      req.session.cartId = cartId; // Guardar el ID del carrito en la sesión
+    }
+
     // Renderiza la vista con los datos
     res.render('products', {
       title: 'Lista de Productos',
       products: result.products,
       total: result.total,
       totalPages: result.totalPages,
-      currentPage: result.page
+      currentPage: result.page,
+      cartId // Pasar el ID del carrito a la vista
     });
   } catch (error) {
     console.error("Error al obtener productos:", error);
@@ -105,13 +124,21 @@ app.get('/cart', async (req, res) => {
   const cartId = req.query.cartId; // Obtener el ID del carrito desde los parámetros de la URL
 
   if (!cartId) {
-    return res.render('cart', { title: 'Mi Carrito', cart: null }); // Renderizar la vista sin carrito
+    return res.render('cart', { 
+      title: 'Mi Carrito', 
+      cart: null, 
+      errorMessage: "No se encontró un carrito asociado. Agrega productos desde la página principal." 
+    });
   }
 
   try {
     const cart = await Cart.findById(cartId).populate('products.product'); // Cargar detalles de los productos
     if (!cart) {
-      return res.render('cart', { title: 'Mi Carrito', cart: null }); // Renderizar la vista sin carrito
+      return res.render('cart', { 
+        title: 'Mi Carrito', 
+        cart: null, 
+        errorMessage: "El carrito no existe o ha sido eliminado." 
+      });
     }
 
     res.render('cart', { title: 'Mi Carrito', cart });
