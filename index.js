@@ -97,6 +97,7 @@ io.on('connection', async (socket) => {
       io.emit('updateProducts', updatedProducts); // Notificar a todos los clientes
     } catch (error) {
       console.error("Error al agregar producto:", error);
+      socket.emit('error', "No se pudo agregar el producto");
     }
   });
 

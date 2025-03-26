@@ -1,25 +1,46 @@
-const CartManager = require('../managers/CartManager');
-const path = require('path');
-const cartsFilePath = path.join(__dirname, '../data/carts.json');
-const cartManager = new CartManager(cartsFilePath);
+const Cart = require('../models/cart.model');
+const Product = require('../models/product.model');
 
 // Crear un nuevo carrito
-const createCart = async () => {
-  return await cartManager.createCart();
+exports.createCart = async () => {
+  const cart = new Cart({ products: [], total: 0 });
+  await cart.save();
+  return cart;
 };
 
 // Obtener un carrito por ID
-const getCartById = async (id) => {
-  return await cartManager.getCartById(id);
+exports.getCartById = async (cartId) => {
+  const cart = await Cart.findById(cartId).populate('products.product');
+  if (!cart) throw new Error("Carrito no encontrado");
+  return cart;
 };
 
-// Agregar un producto a un carrito
-const addProductToCart = async (cartId, productId) => {
-  return await cartManager.addProductToCart(cartId, productId);
+// Agregar un producto al carrito
+exports.addProductToCart = async (cartId, productId, quantity) => {
+  const cart = await Cart.findById(cartId);
+  if (!cart) throw new Error("Carrito no encontrado");
+
+  const product = await Product.findById(productId);
+  if (!product) throw new Error("Producto no encontrado");
+
+  // Verificar si el producto ya está en el carrito
+  const existingProduct = cart.products.find(item => item.product.toString() === productId);
+  if (existingProduct) {
+    existingProduct.quantity += quantity; // Incrementar la cantidad si ya existe
+  } else {
+    cart.products.push({ product: productId, quantity }); // Agregar el producto al carrito
+  }
+
+  await cart.save(); // Guardar el carrito (el middleware calculará el total)
+  return cart;
 };
 
-module.exports = {
-  createCart,
-  getCartById,
-  addProductToCart,
+// Eliminar un producto del carrito
+exports.removeProductFromCart = async (cartId, productId) => {
+  const cart = await Cart.findById(cartId);
+  if (!cart) throw new Error("Carrito no encontrado");
+
+  cart.products = cart.products.filter(item => item.product.toString() !== productId); // Filtrar el producto
+  await cart.save(); // Guardar el carrito (el middleware recalculará el total)
+  return cart;
 };

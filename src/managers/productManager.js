@@ -48,5 +48,4 @@ class ProductManager {
   }
 }
 
-// Exporta la clase correctamente
 module.exports = ProductManager;

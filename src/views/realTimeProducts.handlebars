@@ -53,10 +53,9 @@
   const title = document.getElementById('title').value;
   const price = document.getElementById('price').value;
   const stock = document.getElementById('stock').value;
-  const id = document.getElementById('id').value;
 
   // Enviar los datos al servidor
-  socket.emit('addProduct', { title, price, stock, id });
+  socket.emit('addProduct', { title, price, stock });
   document.getElementById('add-product-form').reset();
 });
 </script>
