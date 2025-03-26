@@ -10,12 +10,17 @@ router.get('/', async (req, res) => {
 
 // Obtener un producto por ID
 router.get('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
-  const product = await getProductById(productId);
-  if (product) {
-    res.json(product);
-  } else {
-    res.status(404).json({ error: 'Producto no encontrado' });
+  const productId = req.params.pid; // Obtener el ID del producto
+  try {
+    const product = await getProductById(productId); // Pasar el ID al controlador
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ error: 'Producto no encontrado' });
+    }
+  } catch (error) {
+    console.error("Error al obtener producto:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
@@ -28,7 +33,7 @@ router.post('/', async (req, res) => {
 
 // Actualizar un producto existente
 router.put('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
+  const productId = req.params.pid; // Eliminamos parseInt
   const updatedFields = req.body;
   const updatedProduct = await updateProduct(productId, updatedFields);
   if (updatedProduct) {
@@ -40,9 +45,14 @@ router.put('/:pid', async (req, res) => {
 
 // Eliminar un producto
 router.delete('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
-  await deleteProduct(productId);
-  res.json({ message: 'Producto eliminado correctamente' });
+  const productId = req.params.pid; // Obtener el ID del producto
+  try {
+    await deleteProduct(productId); // Pasar el ID al controlador
+    res.json({ message: 'Producto eliminado correctamente' });
+  } catch (error) {
+    console.error("Error al eliminar producto:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
 
 module.exports = router;

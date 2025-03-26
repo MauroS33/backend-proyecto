@@ -12,7 +12,10 @@
 <!-- Formulario para agregar un producto -->
   <form id="add-product-form">
     <input type="text" id="title" placeholder="Título" required />
+    <input type="text" id="description" placeholder="Descripción" required />
     <input type="number" id="price" placeholder="Precio" required />
+    <input type="number" id="stock" placeholder="Stock" required />
+    <input type="text" id="category" placeholder="Categoria" required />
     <button type="submit">Agregar Producto</button>
   </form>
 </div>
@@ -45,11 +48,15 @@
 
 
   // Enviar datos del formulario al servidor
-  document.getElementById('add-product-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const title = document.getElementById('title').value;
-    const price = document.getElementById('price').value;
-    socket.emit('addProduct', { title, price });
-    document.getElementById('add-product-form').reset();
-  });
+ document.getElementById('add-product-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const price = document.getElementById('price').value;
+  const stock = document.getElementById('stock').value;
+  const id = document.getElementById('id').value;
+
+  // Enviar los datos al servidor
+  socket.emit('addProduct', { title, price, stock, id });
+  document.getElementById('add-product-form').reset();
+});
 </script>
