@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -54,60 +54,60 @@
 
   <script>
     // Manejar el envío del formulario de registro
-    document.getElementById('register-form-submit')?.addEventListener('submit', async (e) => {
+//    document.getElementById('register-form-submit')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const userData = {
-        email: formData.get('email'),
-        password: formData.get('password'),
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName')
+//      const formData = new FormData(e.target);
+//      const userData = {
+//        email: formData.get('email'),
+//        password: formData.get('password'),
+//        firstName: formData.get('firstName'),
+//        lastName: formData.get('lastName')
       };
 
       try {
-        const response = await fetch('/api/users/register', {
-          method: 'POST',
+//        const response = await fetch('/api/users/register', {
+//          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userData)
+//          body: JSON.stringify(userData)
         });
 
-        if (!response.ok) throw new Error("Error al registrar usuario");
+//        if (!response.ok) throw new Error("Error al registrar usuario");
 
-        alert("Usuario registrado exitosamente");
-        window.location.href = "/auth?mode=login"; // Redirigir al inicio de sesión
-      } catch (error) {
-        console.error(error.message);
-        alert("Ocurrió un error al registrar el usuario");
+//        alert("Usuario registrado exitosamente");
+//        window.location.href = "/auth?mode=login"; // Redirigir al inicio de sesión
+//      } catch (error) {
+//        console.error(error.message);
+//        alert("Ocurrió un error al registrar el usuario");
       }
     });
 
     // Manejar el envío del formulario de inicio de sesión
-    document.getElementById('login-form-submit')?.addEventListener('submit', async (e) => {
+//    document.getElementById('login-form-submit')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const loginData = {
+//      const formData = new FormData(e.target);
+//      const loginData = {
         email: formData.get('email'),
         password: formData.get('password')
       };
 
       try {
-        const response = await fetch('/api/users/login', {
+//        const response = await fetch('/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(loginData)
+//          body: JSON.stringify(loginData)
         });
 
-        if (!response.ok) throw new Error("Error al iniciar sesión");
+//        if (!response.ok) throw new Error("Error al iniciar sesión");
 
-        const { token } = await response.json();
-        localStorage.setItem('token', token); // Guardar el token JWT
-        alert("Inicio de sesión exitoso");
-        window.location.href = "/products"; // Redirigir a la página de productos
-      } catch (error) {
-        console.error(error.message);
-        alert("Ocurrió un error al iniciar sesión");
+//        const { token } = await response.json();
+//        localStorage.setItem('token', token); // Guardar el token JWT
+//        alert("Inicio de sesión exitoso");
+//        window.location.href = "/products"; // Redirigir a la página de productos
+//      } catch (error) {
+//        console.error(error.message);
+//        alert("Ocurrió un error al iniciar sesión");
       }
     });
   </script>
 </body>
-</html>
+</html> --}}

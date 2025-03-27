@@ -7,18 +7,20 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <h1>Mi Carrito</h1>
+  <h1>Mi carrito de compras</h1>
 
-  {{#if errorMessage}}
+  {{!-- {{#if errorMessage}}
     <p>{{errorMessage}}</p>
-  {{else if cart}}
+  {{else if cart}} --}}
     <div id="cart">
-      {{#each cart.products}}
+      {{#each products}}
         <div>
           <h3>{{this.product.title}}</h3>
           <p>Precio unitario: ${{this.product.price}}</p>
           <p>Cantidad: {{this.quantity}}</p>
           <p>Subtotal: ${{multiply this.product.price this.quantity}}</p>
+          <button onclick="removeFromCart('{{this.product._id}}')">Eliminar</button>
+
         </div>
       {{/each}}
 
@@ -36,6 +38,15 @@
       alert("Gracias por tu compra! Proceso de pago simulado.");
       window.location.href = "/"; // Redirigir al inicio después de "comprar"
     }
+
+  function removeFromCart(productId) {
+    const cartId = localStorage.getItem("cartId") || "ID_CARRITO_DUMMY";
+    fetch(`/api/carts/${cartId}/products/${productId}`, {
+      method: "DELETE"
+    }).then(res => {
+      if (res.ok) location.reload();
+    });
+  }
 
 async function clearCart() {
   const cartId = "{{cart._id}}"; // Obtener el ID del carrito desde la vista

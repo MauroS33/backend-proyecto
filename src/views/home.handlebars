@@ -1,14 +1,55 @@
 <div class="container">
-  <h1>Bienvenido a Ecommerce Becker</h1>
+  <h1>Bienvenido a la Tienda del Becker</h1>
   <p>¿Eres nuevo aquí? <a href="/auth?mode=register">Regístrate ahora</a>.</p>
   <p>¿Ya tienes cuenta? <a href="/auth?mode=login">Inicia sesión aquí</a>.</p>
-  <!-- Botón para ir al carrito -->
-  <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
-  <ul class="product-list" role="list">
+
+  <div class="products-container">
+    <div class="card">
+      <h2>Productos</h2>
+      <p>Ver todos los productos disponibles</p>
+      <button onclick="goToProducts()">Ver Productos</button>
+    </div>
+
+    <div class="card">
+      <strong>Carrito</strong>
+      <p>Ver los productos de tu carrito</p>
+      <button onclick="goToCart()">Ir al Carrito</button>
+    </div>
+
+
+    {{!-- <ul class="product-list" role="list">
     {{#each products}}
       <li class="product-item">{{this.title}} - ${{this.price}}</li>
-    {{/each}}
-  </ul>
+    {{/each}} --}}
+    {{!-- </ul> --}}
+  </div>
 </div>
 
-<script src="/js/index.js"></script>
+<script>
+  function goToProducts() {
+    window.location.href = "/products";
+  }
+
+  async function goToCart() {
+    let cartId = localStorage.getItem("cartId");
+    if (!cartId) {
+      try {
+        const res = await fetch("/api/carts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        const data = await res.json();
+        cartId = data.cart._id;
+        localStorage.setItem("cartId", cartId);
+        console.log("Carrito creado exitosamente", cartId);
+      } catch (err) {
+        alert("Error creando carrito");
+        return;
+      }
+    }
+    window.location.href = `/carts/${cartId}`;
+  }
+
+
+</script>
+{{!-- <script src="/js/index.js"></script> --}}
