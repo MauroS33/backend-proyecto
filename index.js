@@ -44,20 +44,20 @@ app.use(session({
 }));
 
 // Importar rutas
-const homeRouter = require('./src/routes/home.router');
-const authRouter = require('./src/routes/auth.router');
-const productsRouter = require('./src/routes/products.router');
-const cartRouter = require('./src/routes/cart.router');
-const usersRouter = require('./src/routes/users.router');
-const productsAPIRouter = require('./src/routes/products.router');
+const homeRouter = require('./src/routes/home.routes');
+// const authRouter = require('./src/routes/auth.routes');
+const productsRouter = require('./src/routes/products.routes');
+const cartRouter = require('./src/routes/carts.routes');
+// const usersRouter = require('./src/routes/users.routes');
+const productsAPIRouter = require('./src/routes/products.routes');
 
 // Montar las rutas
 app.use('/', homeRouter);
-app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter); // Montar las rutas del carrito
-app.use('/api/users', usersRouter);
-app.use('/api/products', productsAPIRouter);
+//app.use('/api/users', usersRouter);
+// app.use('/api/products', productsAPIRouter);
 
 // Conectar a MongoDB Atlas
 const MONGO_URI = process.env.MONGO_URI;

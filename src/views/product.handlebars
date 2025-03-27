@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Lista de Productos</h1>
+
+  <!-- Contenedor de Productos -->
+  <div id="card">
+  <p>Descripción: {{product.description}}</p>
+  <p>Precio: ${{product.price}}</p>
+  <p>Stock: {{product.stock}}</p>
+  <p>Categoría: {{product.category}}</p>
+  <button onclick="addToCart('{{product._id}}')">Agregar al Carrito</button>
+  </div>
+
+  <script>
+  async function addToCart(productId) {
+  let cartId = localStorage.getItem("cartId");
+
+  // Si no existe el carrito, lo creamos
+  if (!cartId) {
+    try {
+      const res = await fetch("/api/carts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      cartId = data.cart._id;
+      localStorage.setItem("cartId", cartId);
+      console.log("Carrito creado", cartId);
+    } catch (err) {
+      console.error("Error al crear carrito:", err);
+      alert("No se pudo crear el carrito");
+      return;
+    }
+  }
+
+  try {
+    const res = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity: 1 })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.message || "Error al agregar al carrito");
+    }
+
+    alert("Producto agregado al carrito");
+  } catch (err) {
+    console.error("Error al agregar producto:", err);
+    alert("Error al agregar al carrito: " + err.message);
+  }
+}
+</script>
+
+</body>
+</html>

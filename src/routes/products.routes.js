@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product.model'); // Importar el modelo de productos
 
-// const { getAllProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('../controllers/product.controller');
-// const Cart = require('../models/cart.model'); // Importar el modelo de carritos
+const { getAllProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('../controllers/product.controller');
+const Cart = require('../models/cart.model'); // Importar el modelo de carritos
 
 // Ruta API: Obtener todos los productos con paginación usando mongoose-paginate-v2
 router.get('/', async (req, res) => {

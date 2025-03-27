@@ -5,11 +5,8 @@ const cartSchema = new mongoose.Schema({
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, // Referencia al modelo Product
     quantity: { type: Number, required: true, min: 1 }
   }],
-  total: { type: Number, default: 0 },
-  // createdAt: { type: Date, default: Date.now },
-  // updatedAt: { type: Date, default: Date.now }
-  timestamps: true
-});
+  total: { type: Number, default: 0 }
+}, { timestamps: true }); 
 
 // *Middleware "pre" para calcular el total del carrito antes de guardar
 // cartSchema.pre('save', async function (next) {

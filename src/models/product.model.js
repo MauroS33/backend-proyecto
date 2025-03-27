@@ -9,10 +9,7 @@ const productSchema = new mongoose.Schema({
   stock: { type: Number, required: true, min: 0 },
   category: { type: String, required: false },
   thumbnails: { type: [String], default: [] }
-},
-  {
-    timestamps: true
-  });
+}, { timestamps: true });
 
 // Plugin de paginación
 productSchema.plugin(mongoosePaginate);

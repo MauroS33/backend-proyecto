@@ -1,61 +1,58 @@
-<div class="container">
-  <h1 class="title">{{title}}</h1>
-  <ul class="product-list">
-    {{#each products}}
-      <li class="product-item">
-        <h2>{{this.title}}</h2>
-        <p>Precio: ${{this.price}}</p>
-      </li>
-    {{/each}}
-  </ul>
+
+  <h1 class="title">Productos en tiempo real</h1>
+
+  <div class="product-container" id="productList"></div>
 
 <!-- Formulario para agregar un producto -->
-  <form id="add-product-form">
+<h2>Agregar producto</h2>
+
+<form id="add-product-form">
     <input type="text" id="title" placeholder="Título" required />
     <input type="text" id="description" placeholder="Descripción" required />
     <input type="number" id="price" placeholder="Precio" required />
     <input type="number" id="stock" placeholder="Stock" required />
     <input type="text" id="category" placeholder="Categoria" required />
     <button type="submit">Agregar Producto</button>
-  </form>
-</div>
-
+</form>
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+{{!-- <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io();
+//  const socket = io();
 
   // Escuchar eventos del servidor
-  socket.on('updateProducts', (products) => {
-    const productList = document.querySelector('.product-list');
-    productList.innerHTML = ''; // Limpiar la lista
-    products.forEach(product => {
-      const li = document.createElement('li');
-      li.textContent = `${product.title} - $${product.price}`;
-      productList.appendChild(li);
+//  socket.on('updateProducts', (products) => {
+//    const productList = document.querySelector('.product-list');
+//    productList.innerHTML = ''; // Limpiar la lista
+//    products.forEach(product => {
+//      const li = document.createElement('li');
+//      li.textContent = `${product.title} - $${product.price}`;
+//      productList.appendChild(li);
     });
   });
 
 
   // Aviso de error
-  socket.on('error', (errorMessage) => {
+//  socket.on('error', (errorMessage) => {
     Swal.fire({
-      title: 'Error',
-      text: errorMessage,
-      icon: 'error',
-      confirmButtonText: 'Aceptar'
+//      title: 'Error',
+//      text: errorMessage,
+//      icon: 'error',
+//      confirmButtonText: 'Aceptar'
     });
   });
 
 
   // Enviar datos del formulario al servidor
- document.getElementById('add-product-form').addEventListener('submit', (e) => {
+// document.getElementById('add-product-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const title = document.getElementById('title').value;
-  const price = document.getElementById('price').value;
-  const stock = document.getElementById('stock').value;
+//  const title = document.getElementById('title').value;
+//  const price = document.getElementById('price').value;
+//  const stock = document.getElementById('stock').value;
 
   // Enviar los datos al servidor
-  socket.emit('addProduct', { title, price, stock });
-  document.getElementById('add-product-form').reset();
+//  socket.emit('addProduct', { title, price, stock });
+//  document.getElementById('add-product-form').reset();
 });
-</script>
+</script> --}}

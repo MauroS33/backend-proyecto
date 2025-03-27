@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getAllProducts } = require('../controllers/product.controller');
+const Product = require("../models/product.model")
 const Cart = require('../models/cart.model');
 
 // Ruta para la página de inicio
