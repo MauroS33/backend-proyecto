@@ -22,8 +22,8 @@ document.getElementById('add-product-form')?.addEventListener('submit', (e) => {
   e.preventDefault();
 
   // Obtener datos del formulario
-  const title = document.getElementById('title').value;
-  const price = document.getElementById('price').value;
+  const title = document.getElementById('title')?.value;
+  const price = document.getElementById('price')?.value;
 
   // Emitir evento al servidor
   socket.emit('addProduct', { title, price });
@@ -37,5 +37,5 @@ document.getElementById('add-product-form')?.addEventListener('submit', (e) => {
   });
 
   // Resetear el formulario
-  document.getElementById('add-product-form').reset();
+  document.getElementById('add-product-form')?.reset();
 });

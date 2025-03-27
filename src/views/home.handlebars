@@ -2,11 +2,13 @@
   <h1>Bienvenido a Ecommerce Becker</h1>
   <p>¿Eres nuevo aquí? <a href="/auth?mode=register">Regístrate ahora</a>.</p>
   <p>¿Ya tienes cuenta? <a href="/auth?mode=login">Inicia sesión aquí</a>.</p>
-      <!-- Botón para ir al carrito -->
-    <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
+  <!-- Botón para ir al carrito -->
+  <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
   <ul class="product-list" role="list">
     {{#each products}}
       <li class="product-item">{{this.title}} - ${{this.price}}</li>
     {{/each}}
   </ul>
 </div>
+
+<script src="/js/index.js"></script>
