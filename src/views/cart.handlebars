@@ -10,7 +10,7 @@
   <h1>Mi Carrito</h1>
 
   {{#if errorMessage}}
-   <p>{{errorMessage}}</p>
+    <p>{{errorMessage}}</p>
   {{else if cart}}
     <div id="cart">
       {{#each cart.products}}
@@ -25,6 +25,7 @@
       <h2>Total: ${{cart.total}}</h2>
 
       <button onclick="checkout()">Finalizar Compra</button>
+      <button onclick="clearCart()">Vaciar Carrito</button>
     </div>
   {{else}}
     <p>El carrito está vacío.</p>
@@ -35,6 +36,24 @@
       alert("Gracias por tu compra! Proceso de pago simulado.");
       window.location.href = "/"; // Redirigir al inicio después de "comprar"
     }
+
+async function clearCart() {
+  const cartId = "{{cart._id}}"; // Obtener el ID del carrito desde la vista
+  try {
+    const response = await fetch(`/api/carts/${cartId}`, {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) throw new Error("Error al vaciar el carrito");
+
+    const result = await response.json();
+    alert(result.message);
+    window.location.reload(); // Recargar la página para reflejar los cambios
+  } catch (error) {
+    console.error(error.message);
+    alert("Ocurrió un error al vaciar el carrito");
+  }
+}
   </script>
 </body>
 </html>

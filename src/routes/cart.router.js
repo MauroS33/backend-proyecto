@@ -62,4 +62,52 @@ router.delete('/:cid/products/:pid', async (req, res) => {
   }
 });
 
+// Vaciar el carrito
+router.delete('/:cid', async (req, res) => {
+  const cartId = req.params.cid;
+
+  try {
+    const cart = await Cart.findById(cartId);
+    if (!cart) throw new Error("Carrito no encontrado");
+
+    cart.products = []; // Vaciar la lista de productos
+    cart.total = 0; // Restablecer el total
+    await cart.save();
+
+    res.json({ message: "Carrito vaciado exitosamente", cart });
+  } catch (error) {
+    console.error("Error al vaciar el carrito:", error);
+    res.status(404).json({ error: error.message });
+  }
+});
+
+// Ruta para ver el carrito (renderizar la vista)
+router.get('/', async (req, res) => {
+  const cartId = req.query.cartId || req.session.cartId; // Obtener el ID del carrito desde los parámetros o la sesión
+
+  if (!cartId) {
+    return res.render('cart', { 
+      title: 'Mi Carrito', 
+      cart: null, 
+      errorMessage: "No se encontró un carrito asociado. Agrega productos desde la página principal." 
+    });
+  }
+
+  try {
+    const cart = await Cart.findById(cartId).populate('products.product'); // Cargar detalles de los productos
+    if (!cart) {
+      return res.render('cart', { 
+        title: 'Mi Carrito', 
+        cart: null, 
+        errorMessage: "El carrito no existe o ha sido eliminado." 
+      });
+    }
+
+    res.render('cart', { title: 'Mi Carrito', cart });
+  } catch (error) {
+    console.error("Error al cargar el carrito:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
 module.exports = router;

@@ -1,15 +1,13 @@
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const express = require('express');
-const mongoose = require('mongoose'); // Importar Mongoose
-require('dotenv').config(); // Cargar variables de entorno
+const mongoose = require('mongoose');
+require('dotenv').config();
 const path = require('path');
-const session = require('express-session'); // Importar express-session
+const session = require('express-session');
 
 // Importar funciones de controladores
 const { getAllProducts, addProduct, deleteProduct } = require('./src/controllers/product.controller');
-const Product = require('./src/models/product.model'); // Importar el modelo de productos
-const Cart = require('./src/models/cart.model'); // Importar el modelo de carritos
 
 // Crear la aplicación Express
 const app = express();
@@ -18,14 +16,14 @@ const app = express();
 const handlebars = require('express-handlebars');
 app.engine('handlebars', handlebars.engine({
   runtimeOptions: {
-    allowProtoPropertiesByDefault: true, // Permite el acceso a propiedades del prototipo
-    allowProtoMethodsByDefault: true    // Permite el acceso a métodos del prototipo
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
   },
   helpers: {
     ifCond: function (v1, v2, options) {
-      return v1 === v2 ? options.fn(this) : options.inverse(this); // Helper personalizado para condiciones
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
     },
-    multiply: (price, quantity) => price * quantity // Helper para multiplicar precio y cantidad
+    multiply: (price, quantity) => price * quantity
   }
 }));
 app.set('view engine', 'handlebars');
@@ -39,128 +37,41 @@ app.use(express.json());
 
 // Configurar sesiones
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'secreto', // Clave secreta para cifrar las sesiones
+  secret: process.env.SESSION_SECRET || 'secreto',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Cambia a `true` si usas HTTPS
+  cookie: { secure: false }
 }));
 
 // Importar rutas
-const usersRouter = require('./src/routes/users.router');
+const homeRouter = require('./src/routes/home.router');
+const authRouter = require('./src/routes/auth.router');
 const productsRouter = require('./src/routes/products.router');
-const cartsRouter = require('./src/routes/carts.router');
+const cartRouter = require('./src/routes/cart.router');
+const usersRouter = require('./src/routes/users.router');
+const productsAPIRouter = require('./src/routes/products.router');
 
 // Montar las rutas
+app.use('/', homeRouter);
+app.use('/auth', authRouter);
+app.use('/products', productsRouter);
+app.use('/cart', cartRouter); // Montar las rutas del carrito
 app.use('/api/users', usersRouter);
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
-
-// Ruta para la página de inicio
-app.get('/', async (req, res) => {
-  try {
-    const products = await getAllProducts();
-    res.render('home', { title: 'Home', products });
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-    res.status(500).send("Error interno del servidor");
-  }
-});
-
-// Ruta para la página de productos en tiempo real
-app.get('/realtimeproducts', async (req, res) => {
-  try {
-    const products = await getAllProducts();
-    res.render('realTimeProducts', { title: 'Productos en Tiempo Real', products });
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-    res.status(500).send("Error interno del servidor");
-  }
-});
-
-// Ruta para la página de productos paginados
-app.get('/products', async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Página actual (por defecto: 1)
-  const limit = parseInt(req.query.limit) || 10; // Límite de productos por página (por defecto: 10)
-
-  try {
-    const options = {
-      page,
-      limit,
-      customLabels: {
-        totalDocs: 'total',
-        docs: 'products',
-        totalPages: 'totalPages',
-        currentPage: 'page'
-      }
-    };
-
-    const result = await Product.paginate({}, options); // Paginar los productos
-
-    // Obtener el ID del carrito del usuario
-    let cartId = req.session.cartId; // Obtener el carrito de la sesión
-    if (!cartId) {
-      const cart = await Cart.create({ products: [], total: 0 });
-      cartId = cart._id;
-      req.session.cartId = cartId; // Guardar el ID del carrito en la sesión
-    }
-
-    // Renderiza la vista con los datos
-    res.render('products', {
-      title: 'Lista de Productos',
-      products: result.products,
-      total: result.total,
-      totalPages: result.totalPages,
-      currentPage: result.page,
-      cartId // Pasar el ID del carrito a la vista
-    });
-  } catch (error) {
-    console.error("Error al obtener productos:", error);
-    res.status(500).send("Error interno del servidor");
-  }
-});
-
-// Ruta para ver el carrito
-app.get('/cart', async (req, res) => {
-  const cartId = req.query.cartId; // Obtener el ID del carrito desde los parámetros de la URL
-
-  if (!cartId) {
-    return res.render('cart', { 
-      title: 'Mi Carrito', 
-      cart: null, 
-      errorMessage: "No se encontró un carrito asociado. Agrega productos desde la página principal." 
-    });
-  }
-
-  try {
-    const cart = await Cart.findById(cartId).populate('products.product'); // Cargar detalles de los productos
-    if (!cart) {
-      return res.render('cart', { 
-        title: 'Mi Carrito', 
-        cart: null, 
-        errorMessage: "El carrito no existe o ha sido eliminado." 
-      });
-    }
-
-    res.render('cart', { title: 'Mi Carrito', cart });
-  } catch (error) {
-    console.error("Error al cargar el carrito:", error);
-    res.status(500).send("Error interno del servidor");
-  }
-});
+app.use('/api/products', productsAPIRouter);
 
 // Conectar a MongoDB Atlas
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
   console.error("La variable de entorno MONGO_URI no está definida.");
-  process.exit(1); // Detener el servidor si no hay URI
+  process.exit(1);
 }
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log("Conexión exitosa a MongoDB Atlas"))
   .catch(err => {
     console.error("Error al conectar a MongoDB Atlas:", err);
-    process.exit(1); // Detener el servidor si hay un error
+    process.exit(1);
   });
 
 // Crear el servidor HTTP y vincularlo con Socket.IO
@@ -184,7 +95,7 @@ io.on('connection', async (socket) => {
     try {
       await addProduct(productData);
       const updatedProducts = await getAllProducts();
-      io.emit('updateProducts', updatedProducts); // Notificar a todos los clientes
+      io.emit('updateProducts', updatedProducts);
     } catch (error) {
       console.error("Error al agregar producto:", error);
       socket.emit('error', "No se pudo agregar el producto");
@@ -195,7 +106,7 @@ io.on('connection', async (socket) => {
     try {
       await deleteProduct(productId);
       const updatedProducts = await getAllProducts();
-      io.emit('updateProducts', updatedProducts); // Notificar a todos los clientes
+      io.emit('updateProducts', updatedProducts);
     } catch (error) {
       console.error("Error al eliminar producto:", error);
     }

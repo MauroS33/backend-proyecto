@@ -23,16 +23,16 @@ exports.addProductToCart = async (cartId, productId, quantity) => {
   const product = await Product.findById(productId);
   if (!product) throw new Error("Producto no encontrado");
 
-  // Verificar si el producto ya está en el carrito
-  const existingProduct = cart.products.find(item => item.product.toString() === productId);
-  if (existingProduct) {
-    existingProduct.quantity += quantity; // Incrementar la cantidad si ya existe
-  } else {
-    cart.products.push({ product: productId, quantity }); // Agregar el producto al carrito
-  }
+// Verificar si el producto ya está en el carrito
+const existingProduct = cart.products.find(item => item.product.toString() === productId);
+if (existingProduct) {
+  existingProduct.quantity += quantity; // Incrementar la cantidad si ya existe
+} else {
+  cart.products.push({ product: productId, quantity }); // Agregar el producto al carrito
+}
 
-  await cart.save(); // Guardar el carrito (el middleware calculará el total)
-  return cart;
+await cart.save(); // Guardar el carrito (el middleware calculará el total)
+return cart;
 };
 
 // Eliminar un producto del carrito

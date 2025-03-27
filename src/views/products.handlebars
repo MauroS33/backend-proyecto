@@ -20,20 +20,14 @@
     {{/each}}
   </div>
 
-    <!-- Botón para ir al carrito -->
-    <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
+  <!-- Botón para ir al carrito -->
+  <a href="/cart?cartId={{cartId}}">Ir al Carrito</a>
 
   <!-- Paginación -->
   <div id="pagination">
     <button id="prev-page" {{#ifCond currentPage 1}}disabled{{/ifCond}}>Anterior</button>
     <span>Página {{currentPage}} de {{totalPages}}</span>
     <button id="next-page" {{#ifCond currentPage totalPages}}disabled{{/ifCond}}>Siguiente</button>
-  </div>
-
-  <!-- Carrito -->
-  <h2>Mi Carrito</h2>
-  <div id="cart">
-    <p>Cargando carrito...</p>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -48,7 +42,7 @@
 
     // Función para agregar un producto al carrito
     async function addToCart(productId) {
-      const cartId = localStorage.getItem('cartId'); // Obtener ID del carrito almacenado
+      const cartId = "{{cartId}}"; // Obtener ID del carrito desde la vista
       const quantity = 1;
 
       try {
@@ -60,60 +54,12 @@
 
         if (!response.ok) throw new Error("Error al agregar producto al carrito");
 
-        const cart = await response.json();
-        loadCart(cartId); // Recargar el carrito
         alert("Producto agregado al carrito exitosamente");
       } catch (error) {
         console.error(error.message);
         alert("Ocurrió un error al agregar el producto");
       }
     }
-
-    // Función para cargar el carrito
-    async function loadCart(cartId) {
-      try {
-        const response = await fetch(`/api/carts/${cartId}`);
-        if (!response.ok) throw new Error("Error al cargar el carrito");
-
-        const cart = await response.json();
-        const cartDiv = document.getElementById('cart');
-        if (!cartDiv) {
-      console.error("El elemento 'cart' no fue encontrado en el DOM.");
-      return;
-    }
-        cartDiv.innerHTML = ''; // Limpiar el carrito
-
-        if (cart.products.length === 0) {
-          cartDiv.innerHTML = '<p>El carrito está vacío.</p>';
-        } else {
-          cart.products.forEach(item => {
-            const productDiv = document.createElement('div');
-            productDiv.innerHTML = `
-              <p>${item.product.title} - Cantidad: ${item.quantity} - Subtotal: $${item.product.price * item.quantity}</p>
-            `;
-            cartDiv.appendChild(productDiv);
-          });
-        }
-      } catch (error) {
-        console.error(error.message);
-        cartDiv.innerHTML = '<p>Error al cargar el carrito.</p>';
-      }
-    }
-
-
-    // Inicializar el carrito
-    document.addEventListener('DOMContentLoaded', async () => {
-      let cartId = localStorage.getItem('cartId');
-      if (!cartId) {
-        const response = await fetch('/api/carts/', { method: 'POST' });
-        const cart = await response.json();
-        cartId = cart._id;
-        localStorage.setItem('cartId', cartId); // Guardar ID del carrito
-      }
-
-      loadCart(cartId); // Cargar el carrito
-    });
-    
   </script>
 </body>
 </html>
