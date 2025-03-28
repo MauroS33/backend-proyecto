@@ -49,7 +49,7 @@ const homeRouter = require('./src/routes/home.routes');
 const productsRouter = require('./src/routes/products.routes');
 const cartRouter = require('./src/routes/carts.routes');
 // const usersRouter = require('./src/routes/users.routes');
-const productsAPIRouter = require('./src/routes/products.routes');
+// const productsAPIRouter = require('./src/routes/products.routes');
 
 // Montar las rutas
 app.use('/', homeRouter);
