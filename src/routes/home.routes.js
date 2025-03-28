@@ -5,7 +5,7 @@ const Product = require("../models/product.model")
 const Cart = require('../models/cart.model');
 
 // Ruta para la página de inicio
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const products = await getAllProducts();
 

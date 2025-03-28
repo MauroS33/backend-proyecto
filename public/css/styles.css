@@ -119,19 +119,21 @@ button:hover {
   background-color: #00cc00; /* Verde más oscuro al pasar el mouse */
 }
 
-/* Contenedor principal */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* Paginación */
+.pagination {
+  margin-top: 20px;
+  text-align: center;
 }
 
-/* Colores rasta para encabezados secundarios */
-.title {
-  color: #ff0000; /* Rojo rasta */
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 20px;
+.pagination a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #007BFF; /* Azul para los enlaces */
+  font-weight: bold;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
 }
 
 /* Mensajes de error o éxito */
@@ -151,4 +153,51 @@ button:hover {
   border-radius: 5px;
   margin-bottom: 20px;
   text-align: center;
+}
+
+/* Diseño para filtros */
+.filtros {
+  margin-bottom: 20px;
+}
+
+.filtros label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.filtros select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+}
+
+/* Diseño para el carrito */
+#cart {
+  margin-top: 20px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#cart h3 {
+  color: #ffcc00; /* Amarillo rasta */
+  margin-bottom: 10px;
+}
+
+#cart p {
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+#cart button {
+  background-color: #ff0000; /* Rojo para eliminar */
+}
+
+#cart button:hover {
+  background-color: #cc0000; /* Rojo más oscuro al pasar el mouse */
 }
